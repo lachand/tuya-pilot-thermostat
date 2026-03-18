@@ -7,7 +7,7 @@ from typing import Any
 from homeassistant.components.climate import ClimateEntity, ClimateEntityFeature, HVACMode
 from homeassistant.const import ATTR_TEMPERATURE
 from homeassistant.const import UnitOfTemperature
-from .const import DOMAIN, DP_MAP, MODES
+from .const import DOMAIN, DP_MAP, MODES_MAP
 from .entity import TuyaThermostatEntity
 
 _LOGGER = logging.getLogger(__name__)
@@ -20,7 +20,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     async_add_entities([entity])
 
 class TuyaThermostatClimate(TuyaThermostatEntity, ClimateEntity):
-    _attr_hvac_modes = [HVACMode.OFF, HVACMode.HEAT, HVACMode.AUTO]
+    _attr_hvac_modes = [HVACMode.OFF, HVACMode.HEAT]
     _attr_temperature_unit = UnitOfTemperature.CELSIUS
     _attr_supported_features = ClimateEntityFeature.TARGET_TEMPERATURE
     _attr_min_temp = 5.0
@@ -42,10 +42,8 @@ class TuyaThermostatClimate(TuyaThermostatEntity, ClimateEntity):
     @property
     def hvac_mode(self) -> str:
         mode = self.coordinator.data.mode
-        if mode == "off":
+        if mode == "Standby":
             return HVACMode.OFF
-        if mode == "auto":
-            return HVACMode.AUTO
         return HVACMode.HEAT
 
     async def async_set_temperature(self, **kwargs: Any) -> None:
@@ -56,11 +54,8 @@ class TuyaThermostatClimate(TuyaThermostatEntity, ClimateEntity):
             await self.coordinator.async_request_refresh()
 
     async def async_set_hvac_mode(self, hvac_mode: str) -> None:
-        mode_map = {
-            HVACMode.OFF: "off",
-            HVACMode.AUTO: "auto",
-            HVACMode.HEAT: "heat",
-        }
-        dps = {str(DP_MAP["mode"]): mode_map.get(hvac_mode, "heat")}
+        # OFF → Standby, ON → dernier mode actif (Comfort par défaut)
+        tuya_mode = "Standby" if hvac_mode == HVACMode.OFF else "Comfort"
+        dps = {str(DP_MAP["mode"]): tuya_mode}
         await self.coordinator.client.async_set(dps)
         await self.coordinator.async_request_refresh()
