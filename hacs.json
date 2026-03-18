@@ -1,0 +1,6 @@
+{
+  "name": "Tuya Thermostat (LAN)",
+  "content_in_root": false,
+  "domains": ["tuya_thermostat"],
+  "country": ["fr", "en"]
+}

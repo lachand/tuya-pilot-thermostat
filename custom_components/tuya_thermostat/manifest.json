@@ -2,7 +2,7 @@
   "domain": "tuya_thermostat",
   "name": "Tuya Thermostat (LAN)",
   "version": "0.1.0",
-  "documentation": "https://github.com/votreuser/tuya_thermostat",
+  "documentation": "https://github.com/lachand/tuya-pilot-thermostat",
   "requirements": ["tinytuya>=1.16.0"],
   "dependencies": [],
   "codeowners": ["@votreuser"],
