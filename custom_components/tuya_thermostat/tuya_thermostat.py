@@ -60,7 +60,7 @@ class TuyaThermostatClient:
     async def async_set(self, dps: Dict[str, Any]) -> bool:
         async with self._lock:
             loop = asyncio.get_running_loop()
-            result = await loop.run_in_executor(None, self._device.set_multiple_dps, dps)
+            result = await loop.run_in_executor(None, self._device.set_multiple_values, dps)
         return result.get("success", False)
 
     @staticmethod
