@@ -1,0 +1,31 @@
+# Home Assistant
+__pycache__/
+*.pyc
+*.pyo
+*.db
+*.log
+*.sqlite3
+*.egg-info/
+.env
+.vscode/
+.idea/
+*.swp
+*.swo
+*.bak
+*.orig
+*.tmp
+*.DS_Store
+*.coverage
+.coverage.*
+.cache/
+.mypy_cache/
+.pytest_cache/
+.hass_cache/
+
+# Node
+node_modules/
+dist/
+
+# OS
+Thumbs.db
+.DS_Store
