@@ -5,8 +5,8 @@ from __future__ import annotations
 import logging
 from typing import Any
 from homeassistant.components.climate import ClimateEntity, ClimateEntityFeature, HVACMode
-from homeassistant.components.climate.const import (SUPPORT_TARGET_TEMPERATURE, SUPPORT_PRESET_MODE)
-from homeassistant.const import TEMP_CELSIUS, ATTR_TEMPERATURE
+from homeassistant.const import ATTR_TEMPERATURE
+from homeassistant.const import UnitOfTemperature
 from .const import DOMAIN, DP_MAP, MODES
 from .entity import TuyaThermostatEntity
 
@@ -21,7 +21,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
 
 class TuyaThermostatClimate(TuyaThermostatEntity, ClimateEntity):
     _attr_hvac_modes = [HVACMode.OFF, HVACMode.HEAT, HVACMode.AUTO]
-    _attr_temperature_unit = TEMP_CELSIUS
+    _attr_temperature_unit = UnitOfTemperature.CELSIUS
     _attr_supported_features = ClimateEntityFeature.TARGET_TEMPERATURE
     _attr_min_temp = 5.0
     _attr_max_temp = 35.0
