@@ -60,13 +60,13 @@ class TuyaThermostatConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
 class TuyaThermostatOptionsFlowHandler(config_entries.OptionsFlow):
     def __init__(self, config_entry):
-        self.config_entry = config_entry
+        self._config_entry = config_entry
 
     async def async_step_init(self, user_input=None):
         errors = {}
         if user_input is not None:
             return self.async_create_entry(title="", data=user_input)
-        options = self.config_entry.options.copy()
+        options = self._config_entry.options.copy()
         return self.async_show_form(
             step_id="init",
             data_schema=STEP_OPTIONS_DATA_SCHEMA,

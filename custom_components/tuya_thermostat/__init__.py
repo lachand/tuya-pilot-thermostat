@@ -19,23 +19,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Tuya Thermostat depuis une ConfigEntry."""
     hass.data.setdefault(DOMAIN, {})
     # Le reste de l'initialisation se fait dans les plateformes
-    hass.async_create_task(
-        hass.config_entries.async_forward_entry_setup(entry, "climate")
-    )
-    hass.async_create_task(
-        hass.config_entries.async_forward_entry_setup(entry, "sensor")
-    )
-    hass.async_create_task(
-        hass.config_entries.async_forward_entry_setup(entry, "binary_sensor")
-    )
-    hass.async_create_task(
-        hass.config_entries.async_forward_entry_setup(entry, "switch")
-    )
-    hass.async_create_task(
-        hass.config_entries.async_forward_entry_setup(entry, "number")
-    )
-    hass.async_create_task(
-        hass.config_entries.async_forward_entry_setup(entry, "select")
+    await hass.config_entries.async_forward_entry_setups(
+        entry, ["climate", "sensor", "binary_sensor", "switch", "number", "select"]
     )
     return True
 
