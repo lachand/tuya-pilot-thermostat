@@ -3,11 +3,14 @@
 Setup de l'intégration Tuya Thermostat
 """
 import logging
+from datetime import timedelta
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.typing import ConfigType
 
 from .const import DOMAIN
+from .tuya_thermostat import TuyaThermostatClient
+from .coordinator import TuyaThermostatCoordinator
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -18,7 +21,20 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Tuya Thermostat depuis une ConfigEntry."""
     hass.data.setdefault(DOMAIN, {})
-    # Le reste de l'initialisation se fait dans les plateformes
+
+    client = TuyaThermostatClient(
+        entry.data["host"],
+        entry.data["device_id"],
+        entry.data["local_key"],
+        entry.data.get("protocol_version", "3.3"),
+    )
+    scan_interval = entry.options.get("scan_interval", 30)
+    coordinator = TuyaThermostatCoordinator(
+        hass, client, entry.title, timedelta(seconds=scan_interval)
+    )
+    await coordinator.async_config_entry_first_refresh()
+    hass.data[DOMAIN][entry.entry_id] = {"coordinator": coordinator}
+
     await hass.config_entries.async_forward_entry_setups(
         entry, ["climate", "sensor", "binary_sensor", "switch", "number", "select"]
     )
