@@ -11,6 +11,7 @@ DEFAULT_PROTOCOL_VERSION = "3.3"
 DEFAULT_SCAN_INTERVAL = 30
 
 STEP_USER_DATA_SCHEMA = vol.Schema({
+    vol.Required("name", default="Thermostat"): str,
     vol.Required("host"): str,
     vol.Required("device_id"): str,
     vol.Required("local_key"): str,
@@ -33,7 +34,7 @@ class TuyaThermostatConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             # Validation de la connexion au thermostat
             valid = await self._async_validate_connection(user_input)
             if valid:
-                return self.async_create_entry(title=user_input["device_id"], data=user_input)
+                return self.async_create_entry(title=user_input["name"], data=user_input)
             errors["base"] = "cannot_connect"
         return self.async_show_form(
             step_id="user",
