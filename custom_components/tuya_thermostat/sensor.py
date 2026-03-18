@@ -2,7 +2,7 @@
 Capteurs pour Tuya Thermostat (température, puissance, etc.)
 """
 from homeassistant.components.sensor import SensorEntity
-from homeassistant.const import TEMP_CELSIUS, POWER_WATT
+from homeassistant.const import UnitOfTemperature, UnitOfPower
 from .const import DOMAIN, DP_MAP
 from .entity import TuyaThermostatEntity
 
@@ -11,8 +11,8 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     name = config_entry.title
     unique_id = config_entry.unique_id or config_entry.entry_id
     entities = [
-        TuyaThermostatSensor(coordinator, config_entry, unique_id + "_temp", name + " Température", "temp_current", TEMP_CELSIUS),
-        TuyaThermostatSensor(coordinator, config_entry, unique_id + "_power", name + " Puissance", "average_power", POWER_WATT),
+        TuyaThermostatSensor(coordinator, config_entry, unique_id + "_temp", name + " Température", "temp_current", UnitOfTemperature.CELSIUS),
+        TuyaThermostatSensor(coordinator, config_entry, unique_id + "_power", name + " Puissance", "average_power", UnitOfPower.WATT),
     ]
     async_add_entities(entities)
 

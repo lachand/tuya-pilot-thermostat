@@ -26,11 +26,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload une ConfigEntry."""
-    unload_ok = all(
-        await asyncio.gather(*[
-            hass.config_entries.async_forward_entry_unload(entry, platform)
-            for platform in ("climate", "sensor", "binary_sensor", "switch", "number", "select")
-        ])
+    unload_ok = await hass.config_entries.async_unload_platforms(
+        entry, ["climate", "sensor", "binary_sensor", "switch", "number", "select"]
     )
     if unload_ok:
         hass.data[DOMAIN].pop(entry.entry_id, None)
