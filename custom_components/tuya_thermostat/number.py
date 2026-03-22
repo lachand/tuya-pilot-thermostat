@@ -12,8 +12,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     entities = [
         TuyaThermostatNumber(coordinator, config_entry, unique_id + "_upper_temp", name + " Limite haute", "upper_temp", DP_MAP["upper_temp"], 5, 35, 0.5),
         TuyaThermostatNumber(coordinator, config_entry, unique_id + "_lower_temp", name + " Limite basse", "lower_temp", DP_MAP["lower_temp"], 5, 35, 0.5),
-        TuyaThermostatNumber(coordinator, config_entry, unique_id + "_temp_correction", name + " Correction", "temp_correction", DP_MAP["temp_correction"], -5, 5, 0.1),
-        TuyaThermostatNumber(coordinator, config_entry, unique_id + "_boost_duration", name + " Boost", "boost_duration", DP_MAP["boost_duration"], 0, 120, 1),
+TuyaThermostatNumber(coordinator, config_entry, unique_id + "_boost_duration", name + " Boost", "boost_duration", DP_MAP["boost_duration"], 0, 120, 1),
         TuyaThermostatNumber(coordinator, config_entry, unique_id + "_vacation_duration", name + " Vacances", "vacation_duration", DP_MAP["vacation_duration"], 0, 720, 1),
     ]
     async_add_entities(entities)
