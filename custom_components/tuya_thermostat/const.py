@@ -3,20 +3,28 @@ Constantes et mapping DP pour Tuya Thermostat
 """
 
 # Data Points (DP) — confirmés par scan
-DP_MODE = 101           # mode (écriture)
-DP_CHILD_LOCK = 102     # verrou enfant
-DP_VACATION_DURATION = 110  # durée vacances (jours)
-DP_TEMP_SET = 125       # température cible (×10)
-DP_TEMP_UNIT = 126      # unité (c/f)
-DP_TEMP_CURRENT = 116   # température actuelle (×10)
-DP_UPPER_TEMP = 129     # limite haute (×10)
-DP_LOWER_TEMP = 130     # limite basse (×10)
-DP_RUNNING_MODE = 131   # mode actif en lecture seule
-DP_FAULT = 119          # alarme/défaut
-DP_WINDOW_STATE = 123   # détection fenêtre ouverte
-DP_BOOST_DURATION = 111
-DP_AVERAGE_POWER = 117
-DP_ELEC_STATS = 112
+DP_MODE = 101               # mode (écriture) : Standby/Comfort/ECO/Anti_forst/Thermostat/Programming
+DP_CHILD_LOCK = 102         # verrou enfant (bool)
+DP_VACATION_DURATION = 110  # durée vacances (jours, entier)
+DP_BOOST_DURATION = 111     # durée boost (minutes, entier)
+DP_ELEC_STATS = 112         # statistiques électriques cumulées (unité inconnue)
+DP_TEMP_CURRENT = 116       # température actuelle (×10, °C)
+DP_AVERAGE_POWER = 117      # puissance moyenne sur delta t (×10, W) — NON instantanée
+DP_TEMP_CORRECTION = 118    # correction/calibration température (×10, °C)
+DP_FAULT = 119              # alarme/défaut (bitmask entier)
+DP_WINDOW_OPEN = 122        # détection fenêtre activée (bool)
+DP_WINDOW_STATE = 123       # fenêtre ouverte détectée (bool, lecture seule)
+DP_WINDOW_DURATION = 124    # durée avant détection fenêtre (minutes)
+DP_TEMP_SET = 125           # température cible (×10, °C)
+DP_TEMP_UNIT = 126          # unité température (c/f)
+DP_HYSTERESIS = 128         # hystérésis (×10, °C)
+DP_UPPER_TEMP = 129         # limite haute température (×10, °C)
+DP_LOWER_TEMP = 130         # limite basse température (×10, °C)
+DP_RUNNING_MODE = 131       # mode actif (lecture seule)
+
+# DPs non identifiés
+# DP 121 = 31  : inconnu (valeur fixe)
+# DP 127 = 2   : type de programmation ? (7 jours)
 
 # Mappings pour HA
 DP_MAP = {
