@@ -12,7 +12,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     entities = [
         TuyaThermostatBinarySensor(coordinator, config_entry, unique_id + "_heating", name + " Chauffe", "running_mode", "heating"),
         TuyaThermostatBinarySensor(coordinator, config_entry, unique_id + "_window", name + " Fenêtre ouverte", "window_state", True),
-        TuyaThermostatBinarySensor(coordinator, config_entry, unique_id + "_fault", name + " Alarme", "fault", 1),
+        TuyaThermostatFaultSensor(coordinator, config_entry, unique_id + "_fault", name + " Alarme"),
     ]
     async_add_entities(entities)
 
@@ -26,3 +26,13 @@ class TuyaThermostatBinarySensor(TuyaThermostatEntity, BinarySensorEntity):
     def is_on(self):
         val = getattr(self.coordinator.data, self._attr_attr, None)
         return val == self._attr_on_value
+
+class TuyaThermostatFaultSensor(TuyaThermostatEntity, BinarySensorEntity):
+    """Capteur alarme : actif si fault est non nul (bitmask)."""
+
+    def __init__(self, coordinator, config_entry, unique_id, name):
+        super().__init__(coordinator, config_entry, unique_id, name)
+
+    @property
+    def is_on(self):
+        return bool(self.coordinator.data.fault)
