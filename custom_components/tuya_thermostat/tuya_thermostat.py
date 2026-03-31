@@ -52,7 +52,7 @@ class TuyaThermostatClient:
             boost_duration=dps.get(str(DP_MAP["boost_duration"])),
             vacation_duration=dps.get(str(DP_MAP["vacation_duration"])),
             average_power=self._parse_power(dps.get(str(DP_MAP["average_power"]))),
-            electricity_statistics=dps.get(str(DP_MAP["electricity_statistics"])),
+            electricity_statistics=self._parse_energy(dps.get(str(DP_MAP["electricity_statistics"]))),
             raw_dps=dps,
         )
         return state
@@ -77,6 +77,15 @@ class TuyaThermostatClient:
         if val is None:
             return None
         try:
-            return float(val) / 100.0
+            return float(val) / 10.0
+        except Exception:
+            return None
+
+    @staticmethod
+    def _parse_energy(val: Any) -> Optional[float]:
+        if val is None:
+            return None
+        try:
+            return float(val) / 10.0
         except Exception:
             return None
